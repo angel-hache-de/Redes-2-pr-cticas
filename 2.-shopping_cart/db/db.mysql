@@ -1,0 +1,47 @@
+
+
+create database shipping_cart CHARACTER SET utf8 COLLATE utf8_general_ci;
+use shipping_cart;
+
+CREATE TABLE user (
+  user_id int(10) NOT NULL AUTO_INCREMENT,
+  name varchar(60) NOT NULL,
+  password varchar(50) NOT NULL,
+  role tinyint NOT NULL,
+  PRIMARY KEY (user_id));
+
+CREATE TABLE transaction (
+  transaction_id int(10) NOT NULL AUTO_INCREMENT,
+  date timestamp default current_timestamp NOT NULL,
+  total float NOT NULL,
+  user_id int(10) NOT NULL,
+  PRIMARY KEY (transaction_id),
+  FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+CREATE TABLE product (
+  product_id int(10) NOT NULL AUTO_INCREMENT,
+  name varchar(60) NOT NULL,
+  price float NOT NULL,
+  number_of_downloads int(5) NOT NULL,
+  album varchar(60) NOT NULL,
+  artist varchar(60) NOT NULL,
+  year varchar(4) NOT NULL,
+  duration varchar(5) NOT NULL,
+  audio_filename varchar(60) NOT NULL,
+  image_filename varchar(60) NOT NULL,
+  PRIMARY KEY (product_id));
+
+CREATE TABLE products_in_transaction (
+  id int(10) NOT NULL AUTO_INCREMENT,
+  transaction_id int(10) NOT NULL,
+  product_id int(10) NOT NULL,
+  quantity tinyint NOT NULL,
+  product_price float NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (transaction_id) REFERENCES transaction (transaction_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+insert into user values(0, "angel", "angel", 0);
+insert into user values(0, "admin", "admin", 1);
